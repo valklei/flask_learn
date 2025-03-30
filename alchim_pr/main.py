@@ -1,5 +1,5 @@
 
-from models_relations import User
+from model_relations import User
 from db_connection import DBConnection
 
 from sqlalchemy_train import engine

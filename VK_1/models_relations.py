@@ -1,7 +1,8 @@
 from sqlalchemy import (
     Integer,
     BigInteger,
-    String
+    String,
+    ForeignKey
 )
 
 from sqlalchemy.orm import (
@@ -10,20 +11,7 @@ from sqlalchemy.orm import (
     relationship
 )
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
-
-engine = create_engine(
-    url="sqlite:///../relations.db"
-)
-
-Base = declarative_base()
-
-
-
-
-
-Base.metadata.create_all(bind=engine)
+from VK_1 import engine, Base
 
 class User(Base):
     __tablename__ = 'users'
@@ -44,6 +32,11 @@ class User(Base):
         'Address',
         back_populates='user'
     )
+    profile: Mapped['Profile'] = relationship(
+        'Profile',
+        back_populates='user',
+        uselist=False)
+
 class Address(Base):
     __tablename__ = 'address'
     id: Mapped[int] = mapped_column(
@@ -70,18 +63,26 @@ class Address(Base):
         back_populates='addresses'
     )
 
+
+class Profile(Base):
+    __tablename__ = 'profile'
+    id: Mapped[int] = mapped_column(
+        BigInteger,
+        primary_key=True
+    )
+    email: Mapped[str] = mapped_column(
+        String(75),
+        unique=True
+    )
+    user_id: Mapped[int] = mapped_column(
+        BigInteger,
+        ForeignKey('users.id'),
+        unique=True
+    )
+
+    user: Mapped['User'] = relationship(
+        'User',
+        back_populates='profile'
+    )
+
 Base.metadata.create_all(bind=engine)
-from sqlalchemy import (
-    Integer,
-    BigInteger,
-    String,
-    ForeignKey
-)
-
-from sqlalchemy.orm import (
-    mapped_column,
-    Mapped,
-    relationship
-)
-
-from sqlalchemy_train import engine, Base
