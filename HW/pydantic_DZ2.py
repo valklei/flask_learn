@@ -10,7 +10,9 @@
 # объект обратно в JSON и возвращает его.
 # Добавить кастомный валидатор для проверки соответствия возраста и
 # статуса занятости пользователя.
-# Написать несколько примеров JSON строк для проверки различных сценариев валидации: успешные регистрации и случаи, когда валидация не проходит (например возраст не соответствует статусу занятости).
+# Написать несколько примеров JSON строк для проверки различных сценариев валидации:
+# успешные регистрации и случаи, когда валидация не проходит
+# (например возраст не соответствует статусу занятости).
 # Модели:
 # Address: Должен содержать следующие поля:
 # city: строка, минимум 2 символа.
@@ -27,7 +29,8 @@
 # занят (is_employed = true), его возраст должен быть от 18 до 65 лет.
 
 
-from pydantic import BaseModel, Field, EmailStr, field_validator, model_validator, ValidationError
+from pydantic import (BaseModel, Field, EmailStr, field_validator, model_validator,
+                      ValidationError)
 
 
 class Address(BaseModel):
@@ -70,13 +73,13 @@ def check_json(data_json):
 
 json_input = """{
     "name": "John",
-    "age": 63,
+    "age": 22,
     "email": "john.doe@example.com",
     "is_employed": true,
     "address": {
         "city": "New York",
         "street": "5th Avenue",
-        "house_number": 123
+        "house_number": 2
     }
 }"""
 try:
